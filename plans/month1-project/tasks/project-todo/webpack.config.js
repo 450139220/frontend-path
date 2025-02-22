@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: './src/index.ts', // TypeScript 入口文件
   output: {
-    filename: 'bundle.js', // 输出的 JavaScript 文件名
+    filename: 'main.js', // 输出的 JavaScript 文件名
     path: path.resolve(__dirname, 'dist'), // 输出路径
   },
   resolve: {
@@ -21,7 +21,7 @@ module.exports = {
   },
   devServer: {
     static: path.join(__dirname, 'dist'), // 提供静态文件的路径
-    watchFiles: ['src/**/*'],
+    // watchFiles: ['src/**/*'],
     hot: false, // 启用热更新
     liveReload: true,
     open: true, // 自动打开浏览器
@@ -29,7 +29,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html', // 生成的 HTML 文件模板
+      template: './index.html', // 生成的 HTML 文件模板
     }),
   ],
 };
