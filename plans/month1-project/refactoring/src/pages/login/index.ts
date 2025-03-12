@@ -1,29 +1,31 @@
-const form = document.querySelector('form');
-const btn = document.querySelector('form>button');
+import Store from '../../utils/store';
+import styles from './index.module.css';
 
-form?.addEventListener('submit', (event) => {
-	event.preventDefault();
-	const formData: FormData = new FormData(form);
+export default class PageLogin {
+	body: DocumentFragment;
 
-	// send to server and check for login
-	let username: string = 'undefined';
-	let password: string = 'undefined';
-	for (let pair of formData) {
-		if (pair[0] === 'username') {
-			username = pair[1] as string;
-		} else if (pair[0] === 'password') {
-			password = pair[1] as string;
-		}
+	constructor() {
+		this.body = this.createBody();
 	}
-	try {
-		if (username === 'admin' && password !== '123') {
-			throw new Error('password incorrect');
-		}
 
-		console.log(`hello, ${username}`);
-	} catch (err) {
-		console.log(err);
+	private createBody() {
+		const fragment = document.createDocumentFragment();
+
+		const container = document.createElement('div');
+		fragment.appendChild(container);
+		container.classList.add(styles.container);
+		container.textContent = 'login';
+
+		const btn = document.createElement('button');
+		container.appendChild(btn);
+		btn.textContent = 'LOGIN';
+		btn.addEventListener('click', () => {
+			const storeManager = Store.getInstance(null);
+			storeManager?.setStore('isLoggedIn', 'true');
+			storeManager?.setStore('auth', 'user');
+			console.log('logged in!!');
+		});
+
+		return fragment;
 	}
-});
-
-export default 1;
+}

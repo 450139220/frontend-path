@@ -8,8 +8,8 @@
 
 ### **1.1 `<form>` 语法**
 
-```
-html复制编辑<form action="提交地址" method="提交方式">
+```html
+<form action="提交地址" method="提交方式">
   <input type="text" name="username">
   <button type="submit">提交</button>
 </form>
@@ -41,8 +41,8 @@ html复制编辑<form action="提交地址" method="提交方式">
 
 ### **2.1 常见 `<input>` 类型**
 
-```
-html复制编辑<input type="text" name="username" placeholder="请输入用户名">
+```html
+<input type="text" name="username" placeholder="请输入用户名">
 <input type="password" name="password">
 <input type="email" name="email">
 <input type="number" name="age" min="18" max="100">
@@ -57,8 +57,8 @@ html复制编辑<input type="text" name="username" placeholder="请输入用户�
 
 ### **2.2 其他表单控件**
 
-```
-html复制编辑<!-- 下拉选择框 -->
+```html
+<!-- 下拉选择框 -->
 <select name="country">
   <option value="CN">中国</option>
   <option value="US">美国</option>
@@ -92,8 +92,8 @@ html复制编辑<!-- 下拉选择框 -->
 
 ### **3.1 传统表单提交**
 
-```
-html复制编辑<form action="/submit" method="post">
+```html
+<form action="/submit" method="post">
   <input type="text" name="username">
   <button type="submit">提交</button>
 </form>
@@ -101,8 +101,8 @@ html复制编辑<form action="/submit" method="post">
 
 ### **3.2 `FormData` + `fetch` 方式提交**
 
-```
-html复制编辑<form id="myForm">
+```html
+<form id="myForm">
   <input type="text" name="username">
   <button type="submit">提交</button>
 </form>
@@ -128,15 +128,15 @@ document.getElementById("myForm").addEventListener("submit", (event) => {
 
 ### **4.1 HTML5 表单验证**
 
-```
-html复制编辑<input type="email" name="email" required>
+```html
+<input type="email" name="email" required>
 <input type="password" name="password" minlength="6">
 ```
 
 ### **4.2 JavaScript 自定义验证**
 
-```
-html复制编辑<form id="myForm">
+```html
+<form id="myForm">
   <input type="text" name="username" id="username" required>
   <button type="submit">提交</button>
 </form>
@@ -156,8 +156,8 @@ document.getElementById("myForm").addEventListener("submit", (event) => {
 
 ## **5. 表单样式**
 
-```
-css复制编辑input, select, textarea {
+```css
+input, select, textarea {
   width: 100%;
   padding: 8px;
   margin: 5px 0;
@@ -178,8 +178,8 @@ button {
 
 ### **6.1 Ajax 自动保存**
 
-```
-javascript复制编辑document.querySelector("#username").addEventListener("input", (event) => {
+```javascript
+document.querySelector("#username").addEventListener("input", (event) => {
   fetch("/save", {
     method: "POST",
     body: new FormData(document.querySelector("form"))
@@ -189,8 +189,8 @@ javascript复制编辑document.querySelector("#username").addEventListener("inpu
 
 ### **6.2 使用 `localStorage` 记住表单数据**
 
-```
-javascript复制编辑const input = document.getElementById("username");
+```javascript
+const input = document.getElementById("username");
 
 input.value = localStorage.getItem("username") || "";
 
