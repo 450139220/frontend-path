@@ -1,4 +1,5 @@
 import styles from './index.module.css';
+import Navbar from '../../components/navbar';
 
 export default class PageHome {
 	body: DocumentFragment;
@@ -13,6 +14,10 @@ export default class PageHome {
 		const container = document.createElement('div');
 		fragment.appendChild(container);
 		container.classList.add(styles.container);
+
+		// component navbar
+		const navbar = new Navbar();
+		container.appendChild(navbar.body);
 
 		const a = document.createElement('div');
 		container.appendChild(a);

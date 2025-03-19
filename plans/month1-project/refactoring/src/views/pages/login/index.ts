@@ -1,6 +1,8 @@
 import styles from './index.module.css';
+import { store } from '../../../store';
+import Beian from '../../components/beian';
 
-export default class PageMap {
+export default class PageLogin {
 	body: DocumentFragment;
 
 	constructor() {
@@ -17,6 +19,13 @@ export default class PageMap {
 		const button = document.createElement('button');
 		container.appendChild(button);
 		button.textContent = 'SUBMIT';
+		button.addEventListener('click', () => {
+			store.dispatch('isLoggedIn', 'true');
+		});
+
+		// component beian
+		const beian = new Beian();
+		container.appendChild(beian.body);
 
 		return fragment;
 	}

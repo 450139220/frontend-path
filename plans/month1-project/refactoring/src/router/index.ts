@@ -12,7 +12,7 @@ class Router {
 		window.addEventListener('popstate', this.#popstateHandler.bind(this));
 
 		// bind router-link with route, listen click event
-		this.#bindAnchorElement();
+		// this.#bindAnchorElement();
 
 		// listen log state change event
 		eventEmitter.on(EVENTS.LOGIN, this.#logStateHandler.bind(this));
@@ -25,7 +25,8 @@ class Router {
 		});
 	}
 
-	#bindAnchorElement() {}
+	// bind <a> element to navigation feature, already implemented in navbar component which may be better?
+	// #bindAnchorElement() {}
 
 	#logStateHandler({
 		oldValue,
@@ -60,7 +61,12 @@ class Router {
 	}
 
 	#render(path: string) {
-		eventEmitter.emit(EVENTS.RENDER, path);
+		const currentRoute = this.#routes.find(
+			(route) => route.path === path
+		) as Route;
+
+		// pass route components & log status to view, no matter refresh web or login/logout
+		eventEmitter.emit(EVENTS.RENDER, currentRoute.component);
 	}
 }
 

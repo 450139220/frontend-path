@@ -16,9 +16,4 @@ export const routes: Route[] = [
 		name: '主页',
 		component: () => import('../views/pages/home/index'),
 	},
-	{
-		path: '/map',
-		name: '地图',
-		component: () => import('../views/pages/map/index'),
-	},
 ];
