@@ -25,7 +25,7 @@ export default class Beian {
 
 		const copyright = document.createElement('div');
 		container.appendChild(copyright);
-		copyright.textContent = '©️Copyright';
+		copyright.textContent = 'Copyright©️';
 
 		return fragment;
 	}
