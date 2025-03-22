@@ -43,7 +43,9 @@ class Store {
 		sessionStorage.setItem(state, value);
 
 		// emit log status to router
-		eventEmitter.emit(EVENTS.LOGIN, { oldValue: item, newValue: value });
+		if (state === 'isLoggedIn') {
+			eventEmitter.emit(EVENTS.LOGIN, { oldValue: item, newValue: value });
+		}
 
 		return true;
 	}
