@@ -30,8 +30,18 @@
 	const userStore = useUserStore();
 	function registerLogin() {
 		const form = document.querySelector('.login-form') as HTMLFormElement;
-		form.addEventListener('submit', (event) => {
+		form.addEventListener('submit', async (event) => {
 			event.preventDefault();
+
+			// TODO: prob here
+			const res = await fetch('http://cham.archivemodel.cn/', {
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+				},
+				body: JSON.stringify({ key: 'value' }),
+			});
+			console.log(res.text);
 
 			// logged in?
 			userStore.setLoginState({ token: 'asdl', username: 'name', role: 0 });
