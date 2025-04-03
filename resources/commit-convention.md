@@ -142,7 +142,7 @@ git commit -m "revert: 撤销错误提交 8f3a2b4"
 
 ------
 
-## **7. `Initial Commit`（初始化提交）
+## 7. `Initial Commit`（初始化提交）
 
 在创建新仓库时，初始提交（`Initial Commit`）可以使用：
 
