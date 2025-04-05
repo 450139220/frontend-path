@@ -10,9 +10,11 @@ function Login() {
 	);
 }
 
-function handleLogin() {
-	// TODO: make login logic
-	store.dispatch(login());
+async function handleLogin() {
+	// TODO: how to restrict the parameter of <store.dispatch>?
+	store.dispatch(login({ token: '123123', username: '123', role: 'ad' }));
+	// logout
+	// store.dispatch(login({ token: '', username: '', role: '' }));
 }
 
 export default Login;
