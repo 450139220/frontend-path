@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css');
+
+:root {
+	/* --color-light: #edeff1; */
+	--color-light: #ffffff;
+	--color-dark: #050e1e;
+}
+
+/* reset */
+body {
+	font-family: 'Ubuntu Mono', 'Noto Sans SC', sans-serif;
+	margin: 0;
+}
+
+a {
+	all: unset;
+}
