@@ -22,10 +22,10 @@ function RouteGuard({ children }: { children: JSX.Element }) {
 
 	// do when login event triggered
 	useEffect(() => {
-		if (isLoggedIn) {
+		if (isLoggedIn && location.pathname === '/login') {
 			navigate('/', { replace: true });
 		}
-	}, [isLoggedIn, navigate, token]);
+	}, [isLoggedIn, location, navigate]);
 
 	// <location.pathname !== '/login'> is to avoid loop call of <RouteGuard>
 	if (!isLoggedIn && location.pathname !== '/login')
@@ -59,7 +59,7 @@ function Router() {
 					/>
 				))}
 			</Route>
-			<Route path="*" element={<Navigate to="/" replace />} />
+			{/* <Route path="*" element={<Navigate to="/" replace />} /> */}
 		</Routes>
 	);
 }
