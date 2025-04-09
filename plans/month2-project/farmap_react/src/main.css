@@ -4,14 +4,18 @@
 
 :root {
 	/* --color-light: #edeff1; */
-	--color-light: #ffffff;
-	--color-dark: #050e1e;
+	--color-light-light: #eaf3ea;
+	--color-light-shallow: #d7e5d7;
+	--color-light-gray: #beca4f;
+	--color-light-dark: #1f3f1a;
+	--color-light-font: #000200;
 }
 
 /* reset */
 body {
 	font-family: 'Ubuntu Mono', 'Noto Sans SC', sans-serif;
 	margin: 0;
+	color: var(--color-light-font);
 }
 
 a {

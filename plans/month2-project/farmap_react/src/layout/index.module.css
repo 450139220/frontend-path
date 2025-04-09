@@ -19,21 +19,34 @@
 	justify-content: space-between;
 	width: 200px;
 	height: 100vh;
-	background-color: var(--color-dark);
-	color: var(--color-light);
+	background-color: var(--color-light-light);
+	color: var(--color-light-font);
+}
+
+.nav__single {
+	display: flex;
+	align-items: center;
+	margin: 10px 15px;
 }
 
 .navlink {
 	display: flex;
 	align-items: center;
-	justify-content: left;
+	justify-content: start;
 	gap: 10px;
-	max-width: 100%;
-	padding: 10px 40px;
+	width: 100%;
+	padding: 15px 20px;
+	border-radius: 50px;
+	line-height: 1;
+	transition: all 0.3s ease;
 	cursor: pointer;
 }
+.navlink.active:hover,
 .navlink.active {
-	color: green;
+	background-color: var(--color-light-gray);
+}
+.navlink:hover {
+	background-color: var(--color-light-shallow);
 }
 .navlink.logout {
 	margin-bottom: 20px;

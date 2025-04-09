@@ -32,6 +32,7 @@ const userSlice = createSlice({
 		logout: (state) => {
 			for (const key in state) {
 				sessionStorage.setItem(key, '');
+				state[key] = '';
 			}
 		},
 		login: (state: UserState, action: PayloadAction<UserState>) => {
