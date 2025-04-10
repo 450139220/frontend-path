@@ -50,11 +50,12 @@ function Login() {
 							maxLength={20}
 							id="form-username__input"
 							name="username"
+							placeholder="用户名..."
 							required
 						/>
 						<label htmlFor="form-username__input">
 							<i className={`ri-at-line ${styles['form-data__icon']}`}></i>
-							<span>用户名</span>
+							{/*<span>用户名</span>*/}
 						</label>
 					</div>
 					<div className={styles['form-data']}>
@@ -63,11 +64,12 @@ function Login() {
 							maxLength={20}
 							id="form-password__input"
 							name="password"
+							placeholder="密码..."
 							required
 						/>
 						<label htmlFor="form-password__input">
 							<i className={`ri-key-2-line ${styles['form-data__icon']}`}></i>
-							<span>密码</span>
+							{/*<span>密码</span>*/}
 						</label>
 					</div>
 					<button className={styles['form-button']} type="submit">

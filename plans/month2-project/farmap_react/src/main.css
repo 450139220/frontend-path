@@ -15,9 +15,18 @@
 body {
 	font-family: 'Ubuntu Mono', 'Noto Sans SC', sans-serif;
 	margin: 0;
+	background-color: #fffffa;
 	color: var(--color-light-font);
+}
+body.dark {
+	background-color: black;
+	color: red;
 }
 
 a {
 	all: unset;
+}
+
+img {
+	-webkit-user-drag: none;
 }
