@@ -1,6 +1,12 @@
+@import url('@/main.css');
+
 .container {
 	height: 100vh;
 }
 
 .container__weather {
+}
+
+.weather-graph {
+	background-color: var(--color-light-dark);
 }

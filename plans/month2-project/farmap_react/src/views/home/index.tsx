@@ -8,7 +8,7 @@ function Home() {
 	return (
 		<div className={styles.container}>
 			<TodayWeather></TodayWeather>
-			<DaysWeather></DaysWeather>
+			<DaysWeather width={500} height={300}></DaysWeather>
 		</div>
 	);
 }

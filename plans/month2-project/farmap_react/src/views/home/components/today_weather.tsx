@@ -43,6 +43,7 @@ function TodayWeather() {
 
 	return (
 		<>
+			{todayWeatherProps?.predict ? null : <div>weather data not found</div>}
 			<div>{todayWeatherProps?.predict?.tempMin}</div>
 			<div>{todayWeatherProps?.predict?.tempMax}</div>
 		</>
@@ -57,11 +58,17 @@ async function fetchTodayWeather(
 	const urlCurrent = `https://devapi.qweather.com/v7/weather/now?key=${key}&location=${location}`;
 
 	return Promise.all([
-		getWithError(urlPredict, 'fetch today weather interval'),
-		getWithError(urlCurrent, 'fetch today concrete weather'),
+		getWithError<TodayWeatherPredict>(
+			urlPredict,
+			'fetch today weather interval'
+		),
+		getWithError<TodayWeatherCurrent>(
+			urlCurrent,
+			'fetch today concrete weather'
+		),
 	]).then((res) => {
-		const resPredict = res[0] as TodayWeatherPredict;
-		const resCurrent = res[1] as TodayWeatherCurrent;
+		const resPredict = res[0];
+		const resCurrent = res[1];
 		const todayWeatherProps: TodayWeatherProps = {
 			predict: { tempMax: '', tempMin: '' },
 			current: {

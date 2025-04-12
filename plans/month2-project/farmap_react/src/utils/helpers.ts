@@ -1,4 +1,4 @@
-async function getWithError(url: string, errLog: string): Promise<unknown> {
+async function getWithError<T>(url: string, errLog: string): Promise<T> {
 	const res = await fetch(url)
 		.then((res) => {
 			if (!res.ok) {
