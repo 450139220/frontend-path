@@ -15,3 +15,13 @@ createRoot(document.getElementById('root')!).render(
 		</Provider>
 	</StrictMode>
 );
+
+// type Theme = 'dark' | 'light';
+// const [theme, setTheme] = useState<Theme>('light');
+// const toggleTheme = () => {
+// 	setTheme((theme) => (theme === 'dark' ? 'light' : 'dark'));
+// };
+// useEffect(() => {
+// 	document.documentElement.setAttribute('data-theme', theme);
+// }, [theme]);
+// <button onClick={toggleTheme}></button>;

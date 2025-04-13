@@ -32,13 +32,23 @@ function DaysWeather({ width, height }: DaysWeather) {
 	useEffect(() => {
 		const canvas = canvasRef.current;
 		const ctx = canvas?.getContext('2d') as CanvasRenderingContext2D;
-		const weatherGraph = new WeatherGraph(ctx, width, height, 5);
-		// weatherGraph.draw();
+		// #beca4f
+		const weatherGraph = new WeatherGraph(ctx, width, height, 5, '#1f3f1a');
 
 		if (daysWeatherProps.days.length === 0) {
 			fetchDaysWeather('31b6db36c66f461e89c408c864b51da9', '108.130217,31.170638').then((res) => {
-				console.log(res);
-				weatherGraph.draw([10, 15, 9, 10, 18], [7, 15, 2, 1, 7]);
+				weatherGraph.setY(Number(res.tempMax), Number(res.tempMin));
+
+				const rawDataHigh: number[] = [];
+				const rawDataLow: number[] = [];
+				const labels: string[] = [];
+				res.days.forEach((day) => {
+					rawDataHigh.push(Number(day.tempMax));
+					rawDataLow.push(Number(day.tempMin));
+					labels.push(day.weekday);
+				});
+				weatherGraph.animation(rawDataHigh, rawDataLow, labels);
+
 				setDaysWeatherProps(res);
 			});
 		}
@@ -59,7 +69,7 @@ class WeatherGraph {
 	// graph informations
 	private padding: number = 0;
 	private labels: string[] = ['Xxx', 'Xxx', 'Xxx', 'Xxx', 'Xxx'];
-	private maxY: number = 20;
+	private maxY: number = 0;
 	private minY: number = 0;
 	// point informations
 	private displayDataHigh: number[] = new Array(this.step).fill(10);
@@ -70,9 +80,36 @@ class WeatherGraph {
 		private ctx: CanvasRenderingContext2D,
 		private width: number,
 		private height: number,
-		private step: number
+		private step: number,
+		private color: string
 	) {
 		this.padding = width * 0.1;
+	}
+
+	public setY(maxY: number, minY: number) {
+		this.maxY = maxY;
+		this.minY = minY;
+	}
+
+	public animation(rawDataHigh: number[], rawDataLow: number[], labels: string[]) {
+		if (this.labels[0] === 'Xxx') {
+			this.labels = labels;
+		}
+		const steps = 60;
+		let frame = 0;
+		const step = () => {
+			if (frame >= steps) return;
+			this.displayDataHigh = this.displayDataHigh.map(
+				(v, i) => v + (rawDataHigh[i] - v) / (steps - frame)
+			);
+			this.displayDataLow = this.displayDataLow.map(
+				(v, i) => v + (rawDataLow[i] - v) / (steps - frame)
+			);
+			this.draw();
+			frame++;
+			requestAnimationFrame(step);
+		};
+		step();
 	}
 
 	private getXY(value: number, index: number): { x: number; y: number } {
@@ -81,40 +118,107 @@ class WeatherGraph {
 		const y =
 			this.height -
 			this.padding -
-			(value / (this.maxY - this.minY)) * (this.height - this.padding * 2);
+			((value - this.minY) / (this.maxY - this.minY)) * (this.height - this.padding * 2);
 		return { x, y };
 	}
 
-	public draw(a?: number[], b?: number[]) {
+	public draw() {
 		this.ctx.clearRect(0, 0, this.width, this.height);
 
-		// create gradient district
-		const gradient = this.ctx.createLinearGradient(0, this.padding, 0, this.height - this.padding);
-		gradient.addColorStop(0, '#beca4f60');
-		gradient.addColorStop(1, '#beca4f00');
-
-		if (a && b) {
-			this.displayDataHigh = a;
-			this.displayDataLow = b;
-		}
-
+		// draw border
+		this.ctx.save();
 		this.ctx.beginPath();
-		for (let i = 0; i < this.displayDataHigh.length; i++) {
-			const { x, y } = this.getXY(this.displayDataHigh[i], i);
-			if (i === 0) {
-				this.ctx.moveTo(x, y);
-			} else {
-				this.ctx.lineTo(x, y);
-			}
-		}
-		for (let i = this.displayDataLow.length - 1; i >= 0; i--) {
-			// FIXME: it would exist a bug here
-			const { x, y } = this.getXY(this.displayDataLow[i], i);
-			this.ctx.lineTo(x, y);
-		}
+		this.ctx.moveTo(this.padding, this.padding);
+		this.ctx.lineTo(this.padding, this.height - this.padding);
+		this.ctx.lineTo(this.width - this.padding, this.height - this.padding);
+		this.ctx.lineWidth = 1;
+		this.ctx.strokeStyle = this.color;
+		this.ctx.lineCap = 'round';
+		this.ctx.lineJoin = 'round';
+		this.ctx.setLineDash([5, 3]);
+		this.ctx.stroke();
+		this.ctx.restore();
+
+		// create gradient district
+		// const gradient = this.ctx.createLinearGradient(0, this.padding, 0, this.height - this.padding);
+		const gradient = this.ctx.createLinearGradient(
+			0,
+			this.padding +
+				(this.height - this.padding * 2) *
+					(1 - (Math.max(...this.displayDataHigh) - this.minY) / (this.maxY - this.minY)),
+			0,
+			this.padding +
+				(this.height - this.padding * 2) *
+					(1 - (Math.min(...this.displayDataLow) - this.minY) / (this.maxY - this.minY))
+		);
+		gradient.addColorStop(0, `${this.color}40`);
+		gradient.addColorStop(1, `${this.color}00`);
+
+		// draw gradient district
+		this.ctx.beginPath();
+		this.findPoints(true);
 		this.ctx.closePath();
 		this.ctx.fillStyle = gradient;
 		this.ctx.fill();
+
+		// draw line
+		this.ctx.beginPath();
+		this.ctx.lineWidth = 3;
+		this.ctx.strokeStyle = this.color;
+		this.ctx.lineCap = 'round';
+		this.ctx.lineJoin = 'round';
+		this.findPoints(false);
+		this.ctx.stroke();
+
+		// draw point
+		this.findPoints(false, true);
+
+		// draw axis
+		this.ctx.fillStyle = this.color;
+		this.ctx.font = '600 14px Ubuntu Mono';
+		this.labels.forEach((label, i) => {
+			const { x } = this.getXY(0, i);
+			this.ctx.fillText(label, x - 10, this.height - this.padding + 20);
+		});
+		this.ctx.font = '600 16px Ubuntu Mono';
+		[this.maxY, this.minY].forEach((value) => {
+			const { y } = this.getXY(value, 0);
+			this.ctx.fillText(value.toString(), this.padding - 25, y);
+		});
+	}
+
+	private findPoints(isRound: boolean, isPoint: boolean = false) {
+		for (let i = 0; i < this.displayDataHigh.length; i++) {
+			const { x, y } = this.getXY(this.displayDataHigh[i], i);
+			if (!isPoint) {
+				if (i === 0) {
+					this.ctx.moveTo(x, y);
+				} else {
+					this.ctx.lineTo(x, y);
+				}
+			} else {
+				this.ctx.beginPath();
+				this.ctx.arc(x, y, this.pointRadius, 0, Math.PI * 2);
+				this.ctx.fillStyle = this.color;
+				this.ctx.fill();
+			}
+		}
+
+		for (let i = this.displayDataLow.length - 1; i >= 0; i--) {
+			const { x, y } = this.getXY(this.displayDataLow[i], i);
+			if (!isPoint) {
+				if (i === this.step - 1 && !isRound) {
+					this.ctx.moveTo(x, y);
+				} else {
+					this.ctx.lineTo(x, y);
+				}
+			} else {
+				this.ctx.beginPath();
+				this.ctx.arc(x, y, this.pointRadius, 0, Math.PI * 2);
+				this.ctx.fillStyle = this.color;
+				this.ctx.fill();
+			}
+		}
 	}
 }
 
