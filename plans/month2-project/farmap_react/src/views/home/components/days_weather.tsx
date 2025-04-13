@@ -89,6 +89,13 @@ class WeatherGraph {
 	public setY(maxY: number, minY: number) {
 		this.maxY = maxY;
 		this.minY = minY;
+		// this is for changing the original place of animation
+		for (let i = 0; i < this.displayDataHigh.length; i++) {
+			this.displayDataHigh[i] = minY;
+		}
+		for (let i = 0; i < this.displayDataLow.length; i++) {
+			this.displayDataLow[i] = minY;
+		}
 	}
 
 	public animation(rawDataHigh: number[], rawDataLow: number[], labels: string[]) {
@@ -102,6 +109,7 @@ class WeatherGraph {
 			this.displayDataHigh = this.displayDataHigh.map(
 				(v, i) => v + (rawDataHigh[i] - v) / (steps - frame)
 			);
+
 			this.displayDataLow = this.displayDataLow.map(
 				(v, i) => v + (rawDataLow[i] - v) / (steps - frame)
 			);
