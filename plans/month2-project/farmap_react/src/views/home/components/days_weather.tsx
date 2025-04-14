@@ -19,52 +19,59 @@ interface DaysWeatherProps {
 interface DaysWeather {
 	width: number;
 	height: number;
+	color: string;
 }
 
-function DaysWeather({ width, height }: DaysWeather) {
-	const [daysWeatherProps, setDaysWeatherProps] = useState<DaysWeatherProps>({
-		days: [],
-		tempMax: 0,
-		tempMin: 0,
-	});
+function DaysWeather({ width, height, color }: DaysWeather) {
+	const [noWeather, setNoWeather] = useState<boolean>(true);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
-		const canvas = canvasRef.current;
-		const ctx = canvas?.getContext('2d') as CanvasRenderingContext2D;
-		// #beca4f
-		const weatherGraph = new WeatherGraph(ctx, width, height, 5, '#1f3f1a');
+		const canvas = canvasRef.current!;
+		const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+		const weatherGraph = new WeatherGraph(ctx, width, height, 7, color);
 
-		if (daysWeatherProps.days.length === 0) {
-			fetchDaysWeather('31b6db36c66f461e89c408c864b51da9', '108.130217,31.170638').then((res) => {
-				weatherGraph.setY(Number(res.tempMax), Number(res.tempMin));
+		const rawDataHigh: number[] = [];
+		const rawDataLow: number[] = [];
+		const labels: string[] = [];
+		weatherGraph.animation(rawDataHigh, rawDataLow);
 
-				const rawDataHigh: number[] = [];
-				const rawDataLow: number[] = [];
-				const labels: string[] = [];
-				res.days.forEach((day) => {
-					rawDataHigh.push(Number(day.tempMax));
-					rawDataLow.push(Number(day.tempMin));
-					labels.push(day.weekday);
-				});
-				weatherGraph.animation(rawDataHigh, rawDataLow, labels);
+		const enterHandler = weatherGraph.createHoverEvent();
+		const outHandler = weatherGraph.removeHoverEvent();
+		canvas.addEventListener('mousemove', enterHandler);
+		canvas.addEventListener('mouseout', outHandler);
 
-				setDaysWeatherProps(res);
+		fetchDaysWeather('31b6db36c66f461e89c408c864b51da9', '108.130217,31.170638').then((res) => {
+			if (res.days.length !== 0) {
+				setNoWeather(false);
+			}
+
+			weatherGraph.setY(Number(res.tempMax), Number(res.tempMin));
+
+			res.days.forEach((day) => {
+				rawDataHigh.push(Number(day.tempMax));
+				rawDataLow.push(Number(day.tempMin));
+				labels.push(day.weekday);
 			});
-		}
-	}, [daysWeatherProps, width, height]);
+			weatherGraph.animation(rawDataHigh, rawDataLow, labels);
+		});
+
+		return () => {
+			canvas.removeEventListener('mouseenter', enterHandler);
+			canvas.removeEventListener('mouseout', outHandler);
+		};
+	}, [width, height, color]);
 
 	return (
-		<canvas
-			className={styles['weather-graph']}
-			ref={canvasRef}
-			width={width}
-			height={height}></canvas>
+		<>
+			<div className={styles['weather-graph']}>
+				<canvas ref={canvasRef} width={width} height={height}></canvas>
+				{noWeather ? <span className={styles['no-weather']}>未获取到天气信息</span> : null}
+			</div>
+		</>
 	);
 }
 
-// TODO: line & point & bezire & text & event
-// TODO: gradient: end at lower place
 class WeatherGraph {
 	// graph informations
 	private padding: number = 0;
@@ -72,7 +79,7 @@ class WeatherGraph {
 	private maxY: number = 0;
 	private minY: number = 0;
 	// point informations
-	private displayDataHigh: number[] = new Array(this.step).fill(10);
+	private displayDataHigh: number[] = new Array(this.step).fill(0);
 	private displayDataLow: number[] = new Array(this.step).fill(0);
 	private pointRadius: number = 5;
 
@@ -98,7 +105,7 @@ class WeatherGraph {
 		}
 	}
 
-	public animation(rawDataHigh: number[], rawDataLow: number[], labels: string[]) {
+	public animation(rawDataHigh: number[], rawDataLow: number[], labels: string[] = this.labels) {
 		if (this.labels[0] === 'Xxx') {
 			this.labels = labels;
 		}
@@ -120,6 +127,17 @@ class WeatherGraph {
 		step();
 	}
 
+	public createHoverEvent(): (this: HTMLCanvasElement, ev: MouseEvent) => unknown {
+		return () => {
+			this.draw(true);
+		};
+	}
+	public removeHoverEvent(): (this: HTMLCanvasElement, ev: MouseEvent) => unknown {
+		return () => {
+			this.draw(false);
+		};
+	}
+
 	private getXY(value: number, index: number): { x: number; y: number } {
 		const step = (this.width - this.padding * 2) / (this.step - 1);
 		const x = this.padding + index * step;
@@ -127,11 +145,19 @@ class WeatherGraph {
 			this.height -
 			this.padding -
 			((value - this.minY) / (this.maxY - this.minY)) * (this.height - this.padding * 2);
+
 		return { x, y };
 	}
 
-	public draw() {
+	private draw(hover: boolean = false) {
 		this.ctx.clearRect(0, 0, this.width, this.height);
+
+		// draw title
+		this.ctx.save();
+		this.ctx.font = `600 ${this.width * 0.03}px Ubuntu Mono`;
+		this.ctx.textAlign = 'center';
+		this.ctx.fillText('近7日温度情况(℃/天)', this.width / 2, this.padding - 20);
+		this.ctx.restore();
 
 		// draw border
 		this.ctx.save();
@@ -148,17 +174,21 @@ class WeatherGraph {
 		this.ctx.restore();
 
 		// create gradient district
-		// const gradient = this.ctx.createLinearGradient(0, this.padding, 0, this.height - this.padding);
-		const gradient = this.ctx.createLinearGradient(
-			0,
-			this.padding +
-				(this.height - this.padding * 2) *
-					(1 - (Math.max(...this.displayDataHigh) - this.minY) / (this.maxY - this.minY)),
-			0,
-			this.padding +
-				(this.height - this.padding * 2) *
-					(1 - (Math.min(...this.displayDataLow) - this.minY) / (this.maxY - this.minY))
-		);
+		const isZero =
+			this.displayDataHigh.some((v) => v !== 0) && this.displayDataLow.some((v) => v !== 0);
+		let gradient = this.ctx.createLinearGradient(0, this.padding, 0, this.height - this.padding);
+		if (!isZero) {
+			gradient = this.ctx.createLinearGradient(
+				0,
+				this.padding +
+					(this.height - this.padding * 2) *
+						(1 - (Math.max(...this.displayDataHigh) - this.minY) / (this.maxY - this.minY)),
+				0,
+				this.padding +
+					(this.height - this.padding * 2) *
+						(1 - (Math.min(...this.displayDataLow) - this.minY) / (this.maxY - this.minY))
+			);
+		}
 		gradient.addColorStop(0, `${this.color}40`);
 		gradient.addColorStop(1, `${this.color}00`);
 
@@ -183,26 +213,54 @@ class WeatherGraph {
 
 		// draw axis
 		this.ctx.fillStyle = this.color;
-		this.ctx.font = '600 14px Ubuntu Mono';
+		this.ctx.font = `600 ${this.width * 0.03}px Ubuntu Mono`;
 		this.labels.forEach((label, i) => {
 			const { x } = this.getXY(0, i);
-			this.ctx.fillText(label, x - 10, this.height - this.padding + 20);
+			this.ctx.fillText(label, x - 15, this.height - this.padding + 20);
 		});
-		this.ctx.font = '600 16px Ubuntu Mono';
+		this.ctx.font = `600 ${this.width * 0.03}px Ubuntu Mono`;
 		[this.maxY, this.minY].forEach((value) => {
 			const { y } = this.getXY(value, 0);
 			this.ctx.fillText(value.toString(), this.padding - 25, y);
 		});
+
+		// draw hover
+		if (hover) {
+			this.ctx.save();
+			this.ctx.lineWidth = 1;
+			this.ctx.strokeStyle = this.color;
+			this.ctx.lineCap = 'round';
+			this.ctx.lineJoin = 'round';
+			this.ctx.setLineDash([5, 3]);
+			this.ctx.beginPath();
+			this.ctx.font = `600 ${this.width * 0.03}px Ubuntu Mono`;
+			this.displayDataHigh.forEach((v, i) => {
+				const { x, y } = this.getXY(v, i);
+				this.ctx.moveTo(x, this.height - this.padding);
+				this.ctx.lineTo(x, this.padding);
+				this.ctx.fillText(v.toString(), x + 10, y - 10);
+			});
+			this.displayDataLow.forEach((v, i) => {
+				const { x, y } = this.getXY(v, i);
+				this.ctx.moveTo(x, this.height - this.padding);
+				this.ctx.fillText(v.toString(), x + 10, y - 10);
+			});
+			this.ctx.stroke();
+			this.ctx.restore();
+		}
 	}
 
 	private findPoints(isRound: boolean, isPoint: boolean = false) {
 		for (let i = 0; i < this.displayDataHigh.length; i++) {
 			const { x, y } = this.getXY(this.displayDataHigh[i], i);
+			const { x: xl, y: yl } = this.getXY(this.displayDataHigh[i - 1], i - 1);
 			if (!isPoint) {
 				if (i === 0) {
 					this.ctx.moveTo(x, y);
 				} else {
-					this.ctx.lineTo(x, y);
+					// this.ctx.lineTo(x, y); // strait
+					const { cp1x, cp1y, cp2x, cp2y } = this.findBezierCp(x, y, xl, yl);
+					this.ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y); // curve
 				}
 			} else {
 				this.ctx.beginPath();
@@ -214,11 +272,17 @@ class WeatherGraph {
 
 		for (let i = this.displayDataLow.length - 1; i >= 0; i--) {
 			const { x, y } = this.getXY(this.displayDataLow[i], i);
+			const { x: xl, y: yl } = this.getXY(this.displayDataLow[i + 1], i + 1);
 			if (!isPoint) {
 				if (i === this.step - 1 && !isRound) {
 					this.ctx.moveTo(x, y);
 				} else {
-					this.ctx.lineTo(x, y);
+					// this.ctx.lineTo(x, y); // strait
+					if (isRound) {
+						this.ctx.lineTo(x, y);
+					}
+					const { cp1x, cp1y, cp2x, cp2y } = this.findBezierCp(x, y, xl, yl);
+					this.ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y); // curve
 				}
 			} else {
 				this.ctx.beginPath();
@@ -227,6 +291,17 @@ class WeatherGraph {
 				this.ctx.fill();
 			}
 		}
+	}
+
+	private findBezierCp(x: number, y: number, xl: number, yl: number) {
+		const centerX = (x - xl) / 2 + xl;
+
+		const cp1x = centerX;
+		const cp1y = yl;
+		const cp2x = centerX;
+		const cp2y = y;
+
+		return { cp1x, cp1y, cp2x, cp2y };
 	}
 }
 
@@ -258,7 +333,7 @@ async function fetchDaysWeather(key: string, location: string): Promise<DaysWeat
 		tempMins.push(Number(day.tempMin));
 	});
 
-	for (let i = 0; i < 5; i++) {
+	for (let i = 0; i < 7; i++) {
 		const { fxDate, iconDay, tempMax, tempMin } = res.daily[i];
 		daysWeatherProps.days.push({
 			fxDate,
