@@ -17,7 +17,9 @@ function setRouterGuard() {
 			return { name: 'login' };
 		}
 
-		if (!to.name) return { name: 'main' };
+		if (userStore.isLoggedIn && to.name === 'login') {
+			return { name: 'main' };
+		}
 
 		return undefined;
 	});
