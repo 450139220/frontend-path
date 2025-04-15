@@ -13,13 +13,21 @@ const routes: RouteRecordRaw[] = [
 		component: Layout,
 		children: [
 			{
-				path: 'home',
-				name: '主页',
+				path: '',
+				name: '/',
+				meta: {
+					title: '主页',
+					icon: 'git-repository',
+				},
 				component: () => import('@/views/home/index.vue'),
 			},
 			{
 				path: 'map',
-				name: '地图',
+				name: 'map',
+				meta: {
+					title: '地图',
+					icon: 'map-2',
+				},
 				component: () => import('@/views/map/index.vue'),
 			},
 		],
