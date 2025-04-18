@@ -1,4 +1,12 @@
-import React from 'react';
+import React, { JSX, useState } from 'react';
+
+interface ReceivedMessage {
+	message: {
+		type: string;
+		data: number[];
+		user: number;
+	};
+}
 
 function App() {
 	class ChatApp {
@@ -12,7 +20,13 @@ function App() {
 			};
 
 			this.socket.onmessage = (event: MessageEvent) => {
-				console.log(`received: ${event.data}`);
+				const received: ReceivedMessage = JSON.parse(event.data);
+				const ascii = received.message.data;
+				const res = new TextDecoder().decode(new Uint8Array(ascii));
+				console.log(res);
+
+				const element = <div>{res}</div>;
+				setChatbox((chatbox) => [...chatbox, element]);
 			};
 
 			this.socket.onclose = () => {
@@ -33,9 +47,7 @@ function App() {
 	}
 
 	const chatApp = new ChatApp('ws://cham.archivemodel.cn:5173');
-	// useEffect(() => {
-	// 	console.log('useEffect');
-	// });
+	const [chatbox, setChatbox] = useState<JSX.Element[]>([]);
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -53,6 +65,11 @@ function App() {
 				<input type="text" name="message" id="messaeg" />
 				<button type="submit">submit</button>
 			</form>
+			<div className="chatbox">
+				{chatbox.map((chat, idx) => (
+					<div key={idx}>{chat}</div>
+				))}
+			</div>
 		</>
 	);
 }
