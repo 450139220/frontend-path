@@ -1,4 +1,4 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit';
+import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserInfo {
 	token: string;
@@ -8,25 +8,56 @@ interface UserInfo {
 	bCoin: number;
 }
 
-const initialState: UserInfo = {
-	token: getLocalStorageItem('token', ''),
-	username: getLocalStorageItem('username', ''),
-	avatar: getLocalStorageItem('avatar', ''),
-	coin: getLocalStorageItem('coin', -1),
-	bCoin: getLocalStorageItem('bCoin', -1),
-};
+const initialState: UserInfo = getLocalUserInfo();
 
 const userSlice = createSlice({
 	name: 'user',
 	initialState,
-	reducers: {},
+	reducers: {
+		login: (state: UserInfo, action: PayloadAction<UserInfo>): UserInfo => {
+			saveLocalUserInfo(action.payload);
+			return { ...state, ...action.payload };
+		},
+		logout: (state: UserInfo) => {
+			const initUserInfo: UserInfo = {
+				token: '',
+				username: '',
+				avatar: '',
+				coin: -1,
+				bCoin: -1,
+			};
+			saveLocalUserInfo(initUserInfo);
+			return { ...state, ...initUserInfo };
+		},
+	},
 });
 
-function getLocalStorageItem<T>(key: keyof UserInfo, defaultValue: T): T {
-	const storedValue = localStorage.getItem(key);
-	if (storedValue === null) return defaultValue;
+export const { login, logout } = userSlice.actions;
 
-	if (key === 'coin' || key === 'bCoin') return Number(storedValue) as T;
+const store = configureStore({
+	reducer: userSlice.reducer,
+});
 
-	return storedValue as T;
+export default store;
+
+function getLocalUserInfo(): UserInfo {
+	const persistantUserInfo = localStorage.getItem('persistantUserInfo');
+	if (persistantUserInfo) return JSON.parse(persistantUserInfo);
+	return {
+		token: '',
+		username: '',
+		avatar: '',
+		coin: -1,
+		bCoin: -1,
+	};
+}
+
+function saveLocalUserInfo(payload: UserInfo): boolean {
+	const persistantUserInfo = JSON.stringify(payload);
+	try {
+		localStorage.setItem('persistantUserInfo', persistantUserInfo);
+		return true;
+	} catch {
+		return false;
+	}
 }
