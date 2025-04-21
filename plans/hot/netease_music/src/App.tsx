@@ -1,11 +1,20 @@
 import './App.css';
-import { HashRouter } from 'react-router';
+import { HashRouter, Link } from 'react-router';
 import Router from '@/router';
+import { Suspense } from 'react';
 
 function App() {
   return (
     <HashRouter>
-      <Router />
+      <nav>
+        <Link to="/discover">Home</Link>
+        <Link to="/my">My</Link>
+        <Link to="/follow">Follow</Link>
+        <Link to="/download">Download</Link>
+      </nav>
+      <Suspense fallback="loading...">
+        <Router />
+      </Suspense>
     </HashRouter>
   );
 }

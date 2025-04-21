@@ -66,6 +66,14 @@ Eslint highlight errors in the editor based on its configuration.
 1. the type of route is `RouteObject` from **react-router**, and the file of initial routes must be end of `.tsx`
 2. lazy load
 
+> ```tsx
+> TODOS: ??
+> ```
+>
+> 
+
+1. hash mode wouldn't trigger browser request, which is better for no server, history mode is clearer and will request to the server for the page
+
 #### 2.2 Snippet
 
 use code snippet to create a coding template fast, just like `log` to code `console.log()`

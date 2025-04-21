@@ -1,17 +1,19 @@
 import styles from './index.module.css';
+
 import type { JSX, ReactNode } from 'react';
 
 interface IProps {
   children?: ReactNode;
 }
 
-function My(props: IProps): JSX.Element {
+function NotFound(props: IProps): JSX.Element {
   return (
     <>
-      <div className={styles.container}>My</div>
+      <div className={styles.container}>404 Not Found</div>
+
       <div>hello</div>
     </>
   );
 }
 
-export default My;
+export default NotFound;

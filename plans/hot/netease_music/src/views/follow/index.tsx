@@ -5,13 +5,13 @@ interface IProps {
   children?: ReactNode;
 }
 
-function My(props: IProps): JSX.Element {
+function Follow(props: IProps): JSX.Element {
   return (
     <>
-      <div className={styles.container}>My</div>
+      <div className={styles.container}>Follow</div>
       <div>hello</div>
     </>
   );
 }
 
-export default My;
+export default Follow;

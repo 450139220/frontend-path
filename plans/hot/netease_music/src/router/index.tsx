@@ -4,7 +4,9 @@ import routes from './routes';
 function Router() {
   return (
     <Routes>
-      <Route path={routes[0].path} element={routes[0].element} />
+      {routes.map((route) => (
+        <Route path={route.path} element={route.element}></Route>
+      ))}
     </Routes>
   );
 }
