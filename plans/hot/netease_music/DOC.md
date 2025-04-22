@@ -30,22 +30,22 @@ Prettier ensures that files are automatically formatted according to the defined
 
 1. add a script in package.json
 
-> ```json
-> // package.json
-> {
->     "scripts":
-> 		"prettier": "prettier --write ."
-> }
-> ```
+```json
+// package.json
+{
+     "scripts":
+    "prettier": "prettier --write ."
+}
+```
 
 2. create a .prettierignore to avoid of formatting unnecessary files
 
-> ```.prettierignore
-> /node_modules/**
-> /dist/*
->
-> **/*.svg
-> ```
+```.prettierignore
+/node_modules/**
+/dist/*
+
+**/*.svg
+```
 
 3. while saving to format automatically, the plugin of prettier must be installed in editor
 
@@ -64,21 +64,58 @@ Eslint highlight errors in the editor based on its configuration.
 #### 2.1 Router
 
 1. the type of route is `RouteObject` from **react-router**, and the file of initial routes must be end of `.tsx`
+
+> choose `useRoutes` now is better than `<Route>`
+
 2. lazy load
 
-> ```tsx
-> TODOS: ??
-> ```
->
-> 
+```tsx
+//lazy import component
+const Component = lazy(() => import('path/to/component'))
 
-1. hash mode wouldn't trigger browser request, which is better for no server, history mode is clearer and will request to the server for the page
+// route object
+{
+  path: '/path',
+  element: <Component />
+}
+```
+
+remember to user `<Suspense>` to cover components, if use lazy loading to load views and it causes blink of components
+
+3. hash mode wouldn't trigger browser request, which is better for no server, history mode is clearer and will request to the server for the page
 
 #### 2.2 Snippet
 
 use code snippet to create a coding template fast, just like `log` to code `console.log()`
 
----
+#### 2.3 Redux
+
+_watch the official web of redux_
+
+
+1. type of state (define typed hooks)
+
+use `ReturnType<T>` is better, and this can infer to other custom hooks with types
+
+```ts
+// won't call store.getState()
+type StateType = ReturnType<typeof store.getState>;
+
+// call store.getState()
+type StateType = typeof store.getState();
+
+export const useAppSelector = useSelector.withTypes<RootState>();
+```
+2. use `shallowEqual` to avoid of unnecessary render when store is not changed
+
+```ts
+const count = useAppSelector(
+  (state) => state.counter.count,
+  shallowEqual
+);
+```
+
+use `PayloadAction<T>` to define the action's type in `reducers`
 
 ### 3. React
 
@@ -87,3 +124,23 @@ use code snippet to create a coding template fast, just like `log` to code `cons
 1. `use `memo()` to cover a function component when optimizing the render function
 
 2. but `memo()` would consume more memory
+
+#### 3.2 Package
+
+packages like `react-xxx` means these are used for bind react and the packages, like
+
+> `react-router` binds react and the router, `react-router-dom` binds react and router and dom
+
+#### 3.3 Request
+
+send request in `useEffect()`
+
+---
+
+### 4. Vite
+
+#### 4.1 environment
+
+`import.meta.env` contains current environment, includes `DEV`, `PROD`, `SSR`
+
+or use `.env.development` and `.env.production` to manage environment, the variables auto completion is injected at `env.d.ts`
