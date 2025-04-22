@@ -1,2 +1,129 @@
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: max-content;
+  background-color: #242424;
+}
+
+.header-logo {
+  float: left;
+  width: 176px;
+  height: 69px;
+  margin: 0;
+  background: url('https://s2.music.126.net/style/web2/img/frame/topbar.png?2606a7302113e860e82187718183ca59')
+    no-repeat 0 9999px;
+  background-position: 0 0;
+  cursor: pointer;
+}
+
+.header-logo > a {
+  color: transparent;
+}
+
+.header-nav {
+  display: flex;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.header-nav > * {
+  display: block;
+  height: 100%;
+  padding: 0 19px;
+  line-height: 70px;
+  cursor: pointer;
+}
+
+.header-nav > *:hover {
+  background-color: #000;
+}
+
+.srch-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 158px;
+  height: 32px;
+  margin-left: 10px;
+  padding-left: 10px;
+  border-radius: 16px;
+  background-color: #fff;
+}
+
+.srch-container > i {
+  width: 20px;
+}
+
+.srch-container > input {
+  width: 100%;
+  border-radius: 0 16px 16px 0;
+}
+
+.creator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 32px;
+  margin-left: 15px;
+  border: 1px solid #4f4f4f;
+  border-radius: 16px;
+  font-size: 12px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.creator:hover {
+  border-color: #fff;
+}
+
+.login-container {
+  position: relative;
+  width: 28px;
+  height: 45px;
+  margin: 27px 0 0 20px;
+  padding: 0 22px 0 0;
+  color: #787878;
+  font-size: 12px;
+  text-align: center;
+}
+
+.login-container:hover {
+  color: #888;
+}
+
+.login-btn {
+  cursor: pointer;
+}
+
+.login-line {
+  display: none;
+}
+
+.login-container:hover > .login-line {
+  display: block;
+}
+
+.login-line__line {
+  display: block;
+  position: absolute;
+  top: 32px;
+  right: -43px;
+  width: 158px;
+  border: 1px solid #202020;
+  border-radius: 4px;
+  background-color: #2b2b2b;
+  box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.5);
+}
+
+.login-line__arr {
+  position: absolute;
+  top: 26px;
+  left: calc(50% - 16px);
+  width: 12px;
+  height: 6px;
+  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+  background-color: #333;
 }

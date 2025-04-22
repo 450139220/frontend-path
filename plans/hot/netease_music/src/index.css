@@ -1,0 +1,16 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css');
+
+body {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+a {
+  color: unset;
+  text-decoration: none;
+}
+
+input:focus,
+input {
+  border: none;
+}
