@@ -1,10 +1,31 @@
 import styles from './App.module.css';
-import { Link } from 'react-router';
+import { NavLink } from 'react-router';
 import Router from '@/router';
 import { Suspense } from 'react';
+import { NavRoute, navRoutes } from '@/router/routes';
 // import { useAppSelector, shallowEqual } from '@/store';
 
 function App() {
+  const validNav = (navRoute: NavRoute, index: number) => {
+    if (navRoute.isLink) {
+      return (
+        <NavLink
+          className={styles['header-nav__btn']}
+          to={navRoute.to}
+          key={index}
+        >
+          {navRoute.name}
+          <i className={styles['header-nav__arr']}></i>
+        </NavLink>
+      );
+    }
+    return (
+      <a href={navRoute.to} target="_blank" key={index}>
+        {navRoute.name}
+      </a>
+    );
+  };
+
   return (
     <>
       <div className={styles.header}>
@@ -12,13 +33,7 @@ function App() {
           <a href="#">网易云音乐</a>
         </h1>
         <nav className={styles['header-nav']}>
-          <Link to="/discover">发现音乐</Link>
-          <Link to="/my">我的音乐</Link>
-          <Link to="/follow">关注</Link>
-          <a href="#">音乐人</a>
-          <a href="#">商城</a>
-          <a href="#">云推歌</a>
-          <Link to="/download">下载客户端</Link>
+          {navRoutes.map((route, index) => validNav(route, index))}
         </nav>
         <div className={styles['srch-container']}>
           <i className="ri-search-2-line"></i>
@@ -40,6 +55,7 @@ function App() {
           </div>
         </div>
       </div>
+      <div className={styles.divider}></div>
       <Suspense fallback="">
         <Router />
       </Suspense>

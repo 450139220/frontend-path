@@ -83,6 +83,15 @@ const Component = lazy(() => import('path/to/component'))
 remember to user `<Suspense>` to cover components, if use lazy loading to load views and it causes blink of components
 
 3. hash mode wouldn't trigger browser request, which is better for no server, history mode is clearer and will request to the server for the page
+3. `<NavLink>` active styles must be wrote in global css
+
+```css
+a.active {
+  /* styles */
+}
+```
+
+
 
 #### 2.2 Snippet
 

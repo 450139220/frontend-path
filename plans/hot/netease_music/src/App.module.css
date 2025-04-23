@@ -39,10 +39,14 @@
   background-color: #000;
 }
 
+.header-nav__btn {
+  position: relative;
+}
+
 .srch-container {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   gap: 5px;
   width: 158px;
   height: 32px;
@@ -57,8 +61,14 @@
 }
 
 .srch-container > input {
-  width: 100%;
+  width: 75%;
   border-radius: 0 16px 16px 0;
+}
+
+.srch-container > input:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .creator {
@@ -126,4 +136,9 @@
   height: 6px;
   clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
   background-color: #333;
+}
+
+.divider {
+  height: 5px;
+  background-color: #c20c0c;
 }

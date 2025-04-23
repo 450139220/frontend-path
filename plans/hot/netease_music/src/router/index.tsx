@@ -22,6 +22,10 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '/',
+        element: <Navigate to="/discover" />,
+      },
+      {
+        path: '/discover',
         element: <Recommend />,
       },
       {
