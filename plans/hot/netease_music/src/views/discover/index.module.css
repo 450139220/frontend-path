@@ -1,3 +1,30 @@
-.container {
-  color: red;
+.header {
+  position: relative;
+  top: -5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 165px;
+  height: 34px;
+  background-color: #c20c0c;
+  color: #fff;
+  font-size: 13px;
+}
+
+.header-link,
+.header-link__active {
+  height: 20px;
+  padding: 0 13px;
+  margin: 0 17px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.header-link {
+  width: max-content;
+}
+
+.header-link:hover,
+.header-link__active {
+  background-color: #9b0909;
 }

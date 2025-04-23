@@ -83,7 +83,7 @@ const Component = lazy(() => import('path/to/component'))
 remember to user `<Suspense>` to cover components, if use lazy loading to load views and it causes blink of components
 
 3. hash mode wouldn't trigger browser request, which is better for no server, history mode is clearer and will request to the server for the page
-3. `<NavLink>` active styles must be wrote in global css
+3. `<NavLink>` active styles must be wrote in global css, and attribute `end` means to match the route totally same
 
 ```css
 a.active {
@@ -130,7 +130,7 @@ use `PayloadAction<T>` to define the action's type in `reducers`
 
 #### 3.1 Memo
 
-1. `use `memo()` to cover a function component when optimizing the render function
+1. use `memo()` to cover a function component when optimizing the render function
 
 2. but `memo()` would consume more memory
 
@@ -143,6 +143,14 @@ packages like `react-xxx` means these are used for bind react and the packages, 
 #### 3.3 Request
 
 send request in `useEffect()`
+
+#### 3.4 Component
+
+better to encapsulate the component to a single file based to its feature
+
+#### 3.5 UseRef
+
+`useRef()` is used for select a dom, just like `document.querySelector()` and `document.getElementById()` ...
 
 ---
 
