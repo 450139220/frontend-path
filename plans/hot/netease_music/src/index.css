@@ -3,6 +3,8 @@
 body {
   box-sizing: border-box;
   margin: 0;
+  background-color: #f2f2f2;
+  font-size: 12px;
 }
 
 a {
@@ -28,4 +30,9 @@ a.active > i {
 input:focus,
 input {
   border: none;
+}
+
+ul,
+li {
+  all: unset;
 }

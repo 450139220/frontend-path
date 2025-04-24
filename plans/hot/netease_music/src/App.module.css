@@ -144,3 +144,145 @@
   height: 5px;
   background-color: #c20c0c;
 }
+
+.footer {
+  position: relative;
+  height: 325px;
+  overflow: hidden;
+  border-top: 1px solid #d3d3d3;
+  background: #f2f2f2;
+}
+
+.footer-content {
+  width: 980px;
+  margin: 0 auto;
+}
+
+.enter {
+  margin-top: 33px;
+  /* text-wrap: nowrap; */
+}
+
+.enter > ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.enter > ul > li {
+  width: 45px;
+  margin-left: 80px;
+  text-align: center;
+  color: #666;
+}
+
+.enter > ul > li:first-child {
+  margin-left: 0;
+}
+
+.enter > ul > li > a {
+  display: block;
+  width: 45px;
+  height: 45px;
+  margin: 0 auto;
+}
+
+.enter > ul > li > span {
+  display: inline-block;
+  width: 100px;
+  margin-top: 10px;
+  margin-left: -27.5px;
+  font-weight: 400;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.enter__1 {
+  background: url('https://s2.music.126.net/style/web2/img/foot_enter_new2.png?0a0664277cd4004d76f8be41d8a4e177')
+    no-repeat;
+  background-size: 220px 220px;
+  background-position: -170px -5px;
+
+  &:hover {
+    background-position: -5px -115px;
+  }
+}
+
+.enter__2 {
+  background: url('https://s2.music.126.net/style/web2/img/foot_enter_new2.png?0a0664277cd4004d76f8be41d8a4e177')
+    no-repeat;
+  background-size: 220px 220px;
+  background-position: -5px -170px;
+
+  &:hover {
+    background-position: -60px -170px;
+  }
+}
+
+.enter__3 {
+  background: url('https://s2.music.126.net/style/web2/img/xStudio.png?26616bfd814029d1733e544624611446')
+    no-repeat;
+  background-size: 45px;
+
+  &:hover {
+    background-image: url('https://s2.music.126.net/style/web2/img/xStudioHover.png?d0b3fd4cee230cb7816afaf37936c705');
+  }
+}
+
+.enter__4 {
+  background: url('https://s2.music.126.net/style/web2/img/foot_enter_new2.png?0a0664277cd4004d76f8be41d8a4e177')
+    no-repeat;
+  background-size: 220px 220px;
+  background-position: -60px -60px;
+
+  &:hover {
+    background-position: -115px -5px;
+  }
+}
+
+.enter__5 {
+  background: url('https://s2.music.126.net/style/web2/img/aiLogo.png?bbfeb6a38b1baf226040b9f46392ea6c')
+    no-repeat;
+  background-size: 45px;
+
+  &:hover {
+    background-image: url('https://s2.music.126.net/style/web2/img/aiLogoHover.png?c763d13a6703f6fca89378d51a0c9087');
+  }
+}
+
+.enter__6 {
+  background: url('https://s2.music.126.net/style/web2/img/cloudSong.png?0184b26aeea3068c3b170aaf8c722fbc')
+    no-repeat;
+  background-size: 45px;
+
+  &:hover {
+    background-image: url('https://s2.music.126.net/style/web2/img/cloudSongHover.png?d668ba822def60b69ec1ed3683814be2');
+  }
+}
+
+.enter__7 {
+  background: url('https://s2.music.126.net/style/web2/img/foot_enter_new2.png?0a0664277cd4004d76f8be41d8a4e177')
+    no-repeat;
+  background-size: 220px 220px;
+  background-position: -170px -115px;
+
+  &:hover {
+    background-position: -60px -115px;
+  }
+}
+
+.copy {
+  position: relative;
+  left: 50%;
+  width: max-content;
+  height: 30px;
+  margin-top: 50px;
+  padding: 5px 20px;
+  border-radius: 15px;
+  background: #ccc;
+  font-size: 20px;
+  color: #999;
+  transform: translateX(-50%);
+  cursor: default;
+  user-select: none;
+}

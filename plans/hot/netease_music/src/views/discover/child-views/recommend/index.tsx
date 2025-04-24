@@ -23,6 +23,10 @@ function Recommend(): JSX.Element {
         interval={5000}
         fadeTime={500}
       />
+      <div className={styles['content']}>
+        <div className={styles['content-l']}></div>
+        <div className={styles['content-r']}></div>
+      </div>
     </>
   );
 }

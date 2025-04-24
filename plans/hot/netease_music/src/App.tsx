@@ -3,6 +3,7 @@ import { NavLink } from 'react-router';
 import Router from '@/router';
 import { Suspense } from 'react';
 import { NavRoute, navRoutes } from '@/router/routes';
+import Footer from './comp/footer';
 // import { useAppSelector, shallowEqual } from '@/store';
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
       <Suspense fallback="">
         <Router />
       </Suspense>
+      <Footer />
     </>
   );
 }
