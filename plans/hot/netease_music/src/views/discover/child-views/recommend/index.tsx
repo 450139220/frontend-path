@@ -17,7 +17,12 @@ function Recommend(): JSX.Element {
 
   return (
     <>
-      <Carousel items={carouselData} len={carouselLen} interval={2000} />
+      <Carousel
+        items={carouselData}
+        len={carouselLen}
+        interval={5000}
+        fadeTime={500}
+      />
     </>
   );
 }

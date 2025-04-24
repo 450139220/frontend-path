@@ -11,15 +11,23 @@ interface CarouselProps {
   items: CarouselObject[];
   len: number;
   interval: number;
+  fadeTime: number;
 }
 
 function Carousel(props: CarouselProps): JSX.Element {
   const [index, setIndex] = useState<number>(0);
+  const [fade, setFade] = useState<0 | 1 | 2>(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setIndex((index) => (index < props.items.length - 1 ? index + 1 : 0));
+      setFade(1);
+
+      setTimeout(() => {
+        setIndex((index) => (index < props.items.length - 1 ? index + 1 : 0));
+        setFade(2);
+      }, props.fadeTime);
     }, props.interval);
+
     return () => {
       clearInterval(timer);
     };
@@ -62,7 +70,19 @@ function Carousel(props: CarouselProps): JSX.Element {
                     key={item.id}
                     target={item.isBlank ? '_blank' : undefined}
                   >
-                    <img src={item.imgUrl} alt="banner" />
+                    <img
+                      src={item.imgUrl}
+                      alt="banner"
+                      style={{
+                        transition:
+                          fade === 1
+                            ? 'opacity 0.5s ease-out'
+                            : fade === 2
+                              ? 'opacity 0.5s ease-in'
+                              : 'none',
+                        opacity: fade === 1 ? 0.2 : 1,
+                      }}
+                    />
                   </a>
                 ))}
               </div>
