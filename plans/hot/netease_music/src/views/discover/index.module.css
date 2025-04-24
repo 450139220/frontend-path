@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: center;
   padding-right: 165px;
+  min-width: calc(1160px - 185px);
   height: 34px;
   background-color: #c20c0c;
   color: #fff;

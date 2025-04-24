@@ -152,6 +152,10 @@ better to encapsulate the component to a single file based to its feature
 
 `useRef()` is used for select a dom, just like `document.querySelector()` and `document.getElementById()` ...
 
+#### 3.6 UseEffect
+
+`useEffect()` would execute twice at strict mode, the step is to mount the component and unmount, then mount again
+
 ---
 
 ### 4. Vite

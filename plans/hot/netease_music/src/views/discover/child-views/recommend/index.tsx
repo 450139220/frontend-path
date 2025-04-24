@@ -1,15 +1,23 @@
 import styles from './index.module.css';
-import type { JSX, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
+import type { JSX } from 'react';
+import { request } from '@/service/request';
+import Carousel, { CarouselObject } from './comp/carousel';
 
-interface IProps {
-  children?: ReactNode;
-}
+function Recommend(): JSX.Element {
+  const [carouselData, setCarouselData] = useState<CarouselObject[]>([]);
+  const [carouselLen, setCarouselLen] = useState<number>(0);
 
-function Recommend(props: IProps): JSX.Element {
+  useEffect(() => {
+    request('/').then((res) => {
+      setCarouselData(res.data);
+      setCarouselLen(res.data.length);
+    });
+  }, []);
+
   return (
     <>
-      <div className={styles.container}>Recommend</div>
-      <div>hello</div>
+      <Carousel items={carouselData} len={carouselLen} interval={2000} />
     </>
   );
 }
