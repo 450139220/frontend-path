@@ -10,7 +10,7 @@ interface TitleProps {
 
 function Title(props: TitleProps): JSX.Element {
   return (
-    <>
+    <div>
       <div className={styles['title-content']}>
         {props.to ? (
           <a className={styles['title-content__to']} href={props.to}>
@@ -45,10 +45,8 @@ function Title(props: TitleProps): JSX.Element {
           </div>
         )}
       </div>
-      {props.children && (
-        <div className={styles['title-child']}>{props.children}</div>
-      )}
-    </>
+      {props.children}
+    </div>
   );
 }
 
