@@ -2,14 +2,8 @@
 
 FarMap数字地图农业应用平台，与其后台管理系统
 
+.editorconfig
 
+.prettierrc
 
-项目2（练习项目）：
-
-网易云音乐
-
-
-
-项目3（练习项目）：
-
-网易商城
+.eslint.config.js
