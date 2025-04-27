@@ -43,6 +43,7 @@ const routes: RouteObject[] = [
   },
 ];
 
+// cant be tested
 export function AuthRoute({ children }: { children: ReactNode }): JSX.Element {
   const location = useLocation();
   const token = useAppSelector((state) => state.user.token);

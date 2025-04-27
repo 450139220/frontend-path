@@ -12,13 +12,16 @@ function Login(props: IProps): JSX.Element {
   const handleSignIn = (e: FormEvent) => {
     e.preventDefault();
     dispatch(
-      signIn({ token: 'asdfasd', userData: { username: '2', role: 'asf' } }),
+      signIn({
+        token: 'asdfasd',
+        userData: { username: '2username', role: 'asf' },
+      }),
     );
   };
 
   return (
     <>
-      <div className="font-bold underline">Login</div>
+      <div>Login</div>
       <form onSubmit={handleSignIn}>
         <div>
           <label htmlFor="username">用户名</label>
